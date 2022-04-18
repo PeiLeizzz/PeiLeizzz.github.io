@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>数据库原理——触发器与过程化 SQL | LazySwifts</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    <link rel="icon" href="/sun.png">
+    <script>var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?bfb42b068181dcaabb4335db407b2a6f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+    <meta name="description" content="Take excellence as a habit">
+    <link rel="preload" href="/assets/css/0.styles.a94fce00.css" as="style"><link rel="preload" href="/assets/js/app.80d57d75.js" as="script"><link rel="preload" href="/assets/js/3.187167f1.js" as="script"><link rel="preload" href="/assets/js/1.965fe851.js" as="script"><link rel="preload" href="/assets/js/37.7c722428.js" as="script"><link rel="prefetch" href="/assets/js/10.8d4c2312.js"><link rel="prefetch" href="/assets/js/100.0a18407d.js"><link rel="prefetch" href="/assets/js/101.19f6f4ae.js"><link rel="prefetch" href="/assets/js/102.c54cf054.js"><link rel="prefetch" href="/assets/js/103.69fb1121.js"><link rel="prefetch" href="/assets/js/104.611687e5.js"><link rel="prefetch" href="/assets/js/105.8c2687ef.js"><link rel="prefetch" href="/assets/js/106.80a01d9a.js"><link rel="prefetch" href="/assets/js/107.dd5a49ff.js"><link rel="prefetch" href="/assets/js/108.08705abd.js"><link rel="prefetch" href="/assets/js/11.e977e67e.js"><link rel="prefetch" href="/assets/js/12.768cb1dd.js"><link rel="prefetch" href="/assets/js/13.7d2faadb.js"><link rel="prefetch" href="/assets/js/14.ad6f91db.js"><link rel="prefetch" href="/assets/js/15.1d6e4aba.js"><link rel="prefetch" href="/assets/js/16.61e9d2b8.js"><link rel="prefetch" href="/assets/js/17.eff00b6e.js"><link rel="prefetch" href="/assets/js/18.1c434eee.js"><link rel="prefetch" href="/assets/js/19.9a42c247.js"><link rel="prefetch" href="/assets/js/20.608a8cef.js"><link rel="prefetch" href="/assets/js/21.73078f6d.js"><link rel="prefetch" href="/assets/js/22.3eb47e28.js"><link rel="prefetch" href="/assets/js/23.aa340a84.js"><link rel="prefetch" href="/assets/js/24.cc96dcab.js"><link rel="prefetch" href="/assets/js/25.ed9ccb6f.js"><link rel="prefetch" href="/assets/js/26.8f578880.js"><link rel="prefetch" href="/assets/js/27.a8973f37.js"><link rel="prefetch" href="/assets/js/28.4e94e363.js"><link rel="prefetch" href="/assets/js/29.38b7d140.js"><link rel="prefetch" href="/assets/js/30.d502c466.js"><link rel="prefetch" href="/assets/js/31.9ff5696c.js"><link rel="prefetch" href="/assets/js/32.dd094132.js"><link rel="prefetch" href="/assets/js/33.bb3526f0.js"><link rel="prefetch" href="/assets/js/34.0057fe6f.js"><link rel="prefetch" href="/assets/js/35.d20eed5b.js"><link rel="prefetch" href="/assets/js/36.dbf204b9.js"><link rel="prefetch" href="/assets/js/38.e3cb4d47.js"><link rel="prefetch" href="/assets/js/39.9a9ca98e.js"><link rel="prefetch" href="/assets/js/4.12ddd8f1.js"><link rel="prefetch" href="/assets/js/40.af513c27.js"><link rel="prefetch" href="/assets/js/41.e27e05b9.js"><link rel="prefetch" href="/assets/js/42.db46fcd9.js"><link rel="prefetch" href="/assets/js/43.c52c461f.js"><link rel="prefetch" href="/assets/js/44.5172bb3f.js"><link rel="prefetch" href="/assets/js/45.51a56239.js"><link rel="prefetch" href="/assets/js/46.16b9c080.js"><link rel="prefetch" href="/assets/js/47.02ed6b2a.js"><link rel="prefetch" href="/assets/js/48.e963edec.js"><link rel="prefetch" href="/assets/js/49.418e2579.js"><link rel="prefetch" href="/assets/js/5.95952000.js"><link rel="prefetch" href="/assets/js/50.a21016c3.js"><link rel="prefetch" href="/assets/js/51.f9afb253.js"><link rel="prefetch" href="/assets/js/52.1b190232.js"><link rel="prefetch" href="/assets/js/53.df7d7fbe.js"><link rel="prefetch" href="/assets/js/54.4dbc9d3b.js"><link rel="prefetch" href="/assets/js/55.c52f1a6a.js"><link rel="prefetch" href="/assets/js/56.1ab37a88.js"><link rel="prefetch" href="/assets/js/57.e6ebb094.js"><link rel="prefetch" href="/assets/js/58.684481a7.js"><link rel="prefetch" href="/assets/js/59.d614f15a.js"><link rel="prefetch" href="/assets/js/6.d5aaee5e.js"><link rel="prefetch" href="/assets/js/60.34a45e4e.js"><link rel="prefetch" href="/assets/js/61.369433e8.js"><link rel="prefetch" href="/assets/js/62.b16c43d6.js"><link rel="prefetch" href="/assets/js/63.8e4ada6e.js"><link rel="prefetch" href="/assets/js/64.4caf02ad.js"><link rel="prefetch" href="/assets/js/65.0fe27510.js"><link rel="prefetch" href="/assets/js/66.03c91498.js"><link rel="prefetch" href="/assets/js/67.b0f1209b.js"><link rel="prefetch" href="/assets/js/68.bd58cd56.js"><link rel="prefetch" href="/assets/js/69.aa5cdeb9.js"><link rel="prefetch" href="/assets/js/7.28177048.js"><link rel="prefetch" href="/assets/js/70.f2942ca8.js"><link rel="prefetch" href="/assets/js/71.9c89b0d4.js"><link rel="prefetch" href="/assets/js/72.2ecdd4aa.js"><link rel="prefetch" href="/assets/js/73.cad7864b.js"><link rel="prefetch" href="/assets/js/74.8301c640.js"><link rel="prefetch" href="/assets/js/75.1617b729.js"><link rel="prefetch" href="/assets/js/76.5eb00565.js"><link rel="prefetch" href="/assets/js/77.3c32a3f6.js"><link rel="prefetch" href="/assets/js/78.1a7aadd7.js"><link rel="prefetch" href="/assets/js/79.b3895da2.js"><link rel="prefetch" href="/assets/js/8.f1421748.js"><link rel="prefetch" href="/assets/js/80.5286ee30.js"><link rel="prefetch" href="/assets/js/81.9a1e4dac.js"><link rel="prefetch" href="/assets/js/82.3e56e812.js"><link rel="prefetch" href="/assets/js/83.087a88de.js"><link rel="prefetch" href="/assets/js/84.8364b634.js"><link rel="prefetch" href="/assets/js/85.b19281d5.js"><link rel="prefetch" href="/assets/js/86.3889f38b.js"><link rel="prefetch" href="/assets/js/87.84348c9b.js"><link rel="prefetch" href="/assets/js/88.165a767d.js"><link rel="prefetch" href="/assets/js/89.016e9b11.js"><link rel="prefetch" href="/assets/js/9.c78676cf.js"><link rel="prefetch" href="/assets/js/90.93531463.js"><link rel="prefetch" href="/assets/js/91.8b3715fc.js"><link rel="prefetch" href="/assets/js/92.9251174a.js"><link rel="prefetch" href="/assets/js/93.f39d6513.js"><link rel="prefetch" href="/assets/js/94.32855f95.js"><link rel="prefetch" href="/assets/js/95.cf7f5192.js"><link rel="prefetch" href="/assets/js/96.ceccefbf.js"><link rel="prefetch" href="/assets/js/97.f18f5c57.js"><link rel="prefetch" href="/assets/js/98.d6d13334.js"><link rel="prefetch" href="/assets/js/99.4bf4bf3c.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.a94fce00.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-19557b78><div data-v-19557b78><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-19557b78 data-v-19557b78><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-64685f0e data-v-19557b78 data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>LazySwifts</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>LazySwifts</span>
+            
+          <!---->
+          2022
+        </a></span></div></div> <div class="hide" data-v-19557b78><header class="navbar" data-v-19557b78><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/headhead.png" alt="LazySwifts" class="logo"> <span class="site-name">LazySwifts</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont undefined"></i>
+  Home
+</a></div><div class="nav-item"><a href="/Guide/" class="nav-link"><i class="iconfont undefined"></i>
+  Guide
+</a></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="/NoCPU/" class="nav-link"><i class="iconfont undefined"></i>
+  NoCPU
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont undefined"></i>
+      CPU
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/CPU/Database/" class="nav-link router-link-active"><i class="iconfont undefined"></i>
+  Database
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Management/" class="nav-link"><i class="iconfont undefined"></i>
+  Management
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Java/" class="nav-link"><i class="iconfont undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Data Science/" class="nav-link"><i class="iconfont undefined"></i>
+  Data Science
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Matlab/" class="nav-link"><i class="iconfont undefined"></i>
+  Matlab
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Operating System/" class="nav-link"><i class="iconfont undefined"></i>
+  Operating System
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Biochemistry and Microbiology/" class="nav-link"><i class="iconfont undefined"></i>
+  Biochemistry and Microbiology
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Computer Network/" class="nav-link"><i class="iconfont undefined"></i>
+  Computer Network
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Information Systems Analysis and Design/" class="nav-link"><i class="iconfont undefined"></i>
+  Information Systems Analysis and Design
+</a></li></ul></div></div><div class="nav-item"><a href="mailto:714838284@qq.com" class="nav-link external"><i class="iconfont undefined"></i>
+  Contact Me
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-19557b78></div> <aside class="sidebar" data-v-19557b78><div class="personal-info-wrapper" data-v-042e23d4><img src="/headhead.png" alt="author-avatar" class="personal-img" data-v-042e23d4> <h3 class="name" data-v-042e23d4>
+    LazySwifts
+  </h3> <div class="num" data-v-042e23d4><div data-v-042e23d4><h3 data-v-042e23d4>80</h3> <h6 data-v-042e23d4>Article</h6></div> <div data-v-042e23d4><h3 data-v-042e23d4>26</h3> <h6 data-v-042e23d4>Tag</h6></div></div> <hr data-v-042e23d4></div> <nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont undefined"></i>
+  Home
+</a></div><div class="nav-item"><a href="/Guide/" class="nav-link"><i class="iconfont undefined"></i>
+  Guide
+</a></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  Tag
+</a></div><div class="nav-item"><a href="/NoCPU/" class="nav-link"><i class="iconfont undefined"></i>
+  NoCPU
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont undefined"></i>
+      CPU
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/CPU/Database/" class="nav-link router-link-active"><i class="iconfont undefined"></i>
+  Database
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Management/" class="nav-link"><i class="iconfont undefined"></i>
+  Management
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Java/" class="nav-link"><i class="iconfont undefined"></i>
+  Java
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Data Science/" class="nav-link"><i class="iconfont undefined"></i>
+  Data Science
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Matlab/" class="nav-link"><i class="iconfont undefined"></i>
+  Matlab
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Operating System/" class="nav-link"><i class="iconfont undefined"></i>
+  Operating System
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Biochemistry and Microbiology/" class="nav-link"><i class="iconfont undefined"></i>
+  Biochemistry and Microbiology
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Computer Network/" class="nav-link"><i class="iconfont undefined"></i>
+  Computer Network
+</a></li><li class="dropdown-item"><!----> <a href="/CPU/Information Systems Analysis and Design/" class="nav-link"><i class="iconfont undefined"></i>
+  Information Systems Analysis and Design
+</a></li></ul></div></div><div class="nav-item"><a href="mailto:714838284@qq.com" class="nav-link external"><i class="iconfont undefined"></i>
+  Contact Me
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/CPU/Database/数据库原理——数据库安全性.html" class="sidebar-link">数据库安全性</a></li><li><a href="/CPU/Database/数据库原理——数据库完整性.html" class="sidebar-link">数据库完整性</a></li><li><a href="/CPU/Database/数据库原理——关系数据理论.html" class="sidebar-link">关系数据理论</a></li><li><a href="/CPU/Database/数据库原理——SQL Server 基本语法整理.html" class="sidebar-link">SQL Server 基本语法</a></li><li><a href="/CPU/Database/数据库原理——SQL Server 中的安全性控制.html" class="sidebar-link">SQL Server 安全性控制</a></li><li><a href="/CPU/Database/数据库原理——触发器与过程化 SQL.html" class="active sidebar-link">触发器与过程化 SQL</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/CPU/Database/数据库原理——触发器与过程化 SQL.html#标准-sql-语言" class="sidebar-link">标准 SQL 语言</a></li><li class="sidebar-sub-header"><a href="/CPU/Database/数据库原理——触发器与过程化 SQL.html#sql-server" class="sidebar-link">SQL Server</a></li></ul></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-64685f0e data-v-19557b78><h3 class="title" style="display:none;" data-v-64685f0e data-v-64685f0e>数据库原理——触发器与过程化 SQL</h3> <!----> <label id="box" class="inputBox" style="display:none;" data-v-64685f0e data-v-64685f0e><input type="password" value="" data-v-64685f0e> <span data-v-64685f0e>Konck! Knock!</span> <button data-v-64685f0e>OK</button></label> <div class="footer" style="display:none;" data-v-64685f0e data-v-64685f0e><span data-v-64685f0e><i class="iconfont reco-theme" data-v-64685f0e></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-64685f0e>vuePress-theme-reco</a></span> <span data-v-64685f0e><i class="iconfont reco-copyright" data-v-64685f0e></i> <a data-v-64685f0e><span data-v-64685f0e>LazySwifts</span>
+            
+          <!---->
+          2022
+        </a></span></div></div> <div data-v-19557b78><main class="page"><div class="page-title" style="display:none;"><h1>数据库原理——触发器与过程化 SQL</h1> <hr> <div data-v-34ea29db><i class="iconfont reco-account" data-v-34ea29db><span data-v-34ea29db>LazySwifts</span></i> <i class="iconfont reco-date" data-v-34ea29db><span data-v-34ea29db>2020-06-29 16:56:10</span></i> <i class="iconfont reco-eye" data-v-34ea29db><span id="/CPU/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E8%A7%A6%E5%8F%91%E5%99%A8%E4%B8%8E%E8%BF%87%E7%A8%8B%E5%8C%96%20SQL.html" data-flag-title="Your Article Title" class="leancloud-visitors" data-v-34ea29db><a class="leancloud-visitors-count" style="font-size:.9rem;font-weight:normal;color:#999;"></a></span></i> <i class="iconfont reco-tag tags" data-v-34ea29db><span class="tag-item" data-v-34ea29db>Database</span><span class="tag-item" data-v-34ea29db>SQL</span></i></div></div> <div class="theme-reco-content content__default" style="display:none;"><h2 id="标准-sql-语言"><a href="#标准-sql-语言" class="header-anchor">#</a> 标准 <code>SQL</code> 语言</h2> <h3 id="触发器"><a href="#触发器" class="header-anchor">#</a> 触发器</h3> <blockquote><p>关于触发器的概念请看<a href="http://peilei722.gitee.io/lazyswifts/CPU/Database/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E6%95%B4%E6%80%A7.html" target="_blank" rel="noopener noreferrer">这里<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></blockquote> <p><strong>创建触发器 <code>CREATE TRIGGER</code>：</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> <span class="token operator">&lt;</span>trigger_name<span class="token operator">&gt;</span>
+{BEFORE<span class="token operator">|</span><span class="token keyword">AFTER</span>} <span class="token operator">&lt;</span>事件名<span class="token punctuation">(</span><span class="token keyword">SELECT</span><span class="token operator">/</span><span class="token keyword">UPDATE</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token operator">&gt;</span>
+<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">&gt;</span>
+REFERENCING NEW<span class="token operator">|</span>OLD <span class="token keyword">ROW</span> <span class="token keyword">AS</span> <span class="token operator">&lt;</span>变量名<span class="token operator">&gt;</span>
+<span class="token keyword">FOR</span> EACH {<span class="token keyword">ROW</span><span class="token operator">|</span>STATEMENT}
+<span class="token punctuation">[</span><span class="token keyword">WHEN</span><span class="token operator">&lt;</span>condition<span class="token operator">&gt;</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span>condition<span class="token operator">&gt;</span>
+<span class="token comment">/* 触发器中也可以使用 SQL 过程语句 */</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><div class="custom-block tip"><p>例子：定义一个 <code>BEFORE</code> 行级触发器，为教师表 <code>Teacher</code> 定义完整性规则“教授的工资不得低于 <code>4000</code> 元，如果低于 <code>4000</code> 元，则自动改为 <code>4000</code> 元</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> Insert_Or_Update_Sal
+BEFORE <span class="token keyword">INSERT</span> <span class="token operator">OR</span> <span class="token keyword">UPDATE</span>
+<span class="token keyword">ON</span> TEACHER
+<span class="token keyword">FOR EACH ROW</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">IF</span> <span class="token punctuation">(</span>newtuple<span class="token punctuation">.</span>Job <span class="token operator">=</span> <span class="token string">'教授'</span><span class="token punctuation">)</span> <span class="token operator">AND</span> <span class="token punctuation">(</span>newtuple<span class="token punctuation">.</span>Sal <span class="token operator">&lt;</span> <span class="token number">4000</span><span class="token punctuation">)</span> <span class="token keyword">THEN</span>
+    	newtuple<span class="token punctuation">.</span>Sal :<span class="token operator">=</span> <span class="token number">4000</span><span class="token punctuation">;</span>
+    <span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div></div> <p><strong>删除触发器 <code>DROP TRIGGER</code>：</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">DROP</span> <span class="token keyword">TRIGGER</span> <span class="token operator">&lt;</span>trigger_name<span class="token operator">&gt;</span> <span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="变量和常量的定义"><a href="#变量和常量的定义" class="header-anchor">#</a> 变量和常量的定义</h3> <ul><li><p><strong>变量定义</strong></p> <p><code>变量名 数据类型 [[NOT NULL] := 初值表达式]</code> 或</p> <p><code>变量名 数据类型 [[NOT NULL] 初值表达式</code></p></li> <li><p><strong>常量定义 <code>CONSTANT</code></strong></p> <p><code>常量名 数据类型 CONSTANT := 常量表达式</code></p> <p>常量<strong>必须要给一个值</strong>，并且该值<strong>存在期间或常量的作用域内不能修改</strong></p></li> <li><p><strong>赋值语句 <code>:=</code></strong></p> <p><code>变量名称 := 表达式</code></p></li></ul> <h3 id="流程控制"><a href="#流程控制" class="header-anchor">#</a> 流程控制</h3> <p><strong>条件控制语句：</strong></p> <ul><li><p><strong><code>IF-THEN</code> 语句</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">IF</span> condition <span class="token keyword">THEN</span>
+	Sequence_of_statements<span class="token punctuation">;</span>
+<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div></li> <li><p><strong><code>IF-THEN-ELSE</code> 语句</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">IF</span> condition <span class="token keyword">THEN</span>
+	Sequence_of_statements1<span class="token punctuation">;</span>
+<span class="token keyword">ELSE</span>
+	Sequence_of_statements2<span class="token punctuation">;</span>
+<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div></li> <li><p><code>THEN</code> 和 <code>ELSE</code> 子句中还可以嵌套 <code>IF</code> 语句</p></li></ul> <p><strong>循环控制语句：</strong></p> <ul><li><p><strong><code>LOOP</code> 语句（死循环）</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">LOOP</span>
+	Sequenece_of_statements<span class="token punctuation">;</span>
+<span class="token keyword">END</span> <span class="token keyword">LOOP</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div></li> <li><p><strong><code>WHILE-LOOP</code> 语句</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">WHILE</span> condition <span class="token keyword">LOOP</span>
+	Sequence_of_statements<span class="token punctuation">;</span>
+<span class="token keyword">END</span> <span class="token keyword">LOOP</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div></li> <li><p><strong><code>FOR-LOOP</code> 语句</strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">FOR</span> count <span class="token operator">IN</span> <span class="token punctuation">[</span>REVERSE<span class="token punctuation">]</span> bound1 <span class="token punctuation">.</span><span class="token punctuation">.</span> bound2 <span class="token keyword">LOOP</span>
+	Sequence_of_statements<span class="token punctuation">;</span>
+<span class="token keyword">END</span> <span class="token keyword">LOOP</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div></li></ul> <h3 id="存储过程"><a href="#存储过程" class="header-anchor">#</a> 存储过程</h3> <div class="custom-block tip"><p>持久性存储模块（<code>PSM</code>），可以被反复调用，被编译后保存在数据库中，运行速度较快，<strong>过程和函数</strong>是命名块。</p></div> <p><strong>存储过程的优点</strong>：</p> <ul><li>运行效率高</li> <li>降低了客户机和服务器之间的通信量</li> <li>方便实施企业规划</li></ul> <p><strong>创建存储过程：<code>CREATE OR REPLACE PROCEDURE</code></strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">PROCEDURE</span> procedure_name<span class="token punctuation">(</span><span class="token punctuation">[</span>param1<span class="token punctuation">,</span> param2<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">AS</span> <span class="token operator">&lt;</span>过程化 <span class="token keyword">SQL</span> 块<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><div class="custom-block tip"><p><strong>参数列表</strong>：用名字来标识调用时给出的参数值，<strong>必须指定值的数据类型</strong>。可以定义输入参数、输出参数或输入/输出参数，默认为输入参数，也可以无参数</p></div> <div class="custom-block tip"><p>例子：从账户 1 转指定数额的款项到账户 2 中，假设账户关系表为 <code>Account(Accountnum, Total)</code></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token comment">/* 定义存储过程 TRANSFER 其参数为转入账户、转出账户、转账额度 */</span>
+<span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">PROCEDURE</span> TRANSFER<span class="token punctuation">(</span>inAccount <span class="token keyword">INT</span><span class="token punctuation">,</span> outAccount <span class="token keyword">INT</span><span class="token punctuation">,</span> amount<span class="token punctuation">,</span> <span class="token keyword">FLOAT</span><span class="token punctuation">)</span>
+<span class="token comment">/* 定义变量 */</span>
+<span class="token keyword">AS</span> <span class="token keyword">DECLARE</span>  
+	totalDepositOut <span class="token keyword">FLOAT</span><span class="token punctuation">;</span>
+	totalDepositIn <span class="token keyword">FLOAT</span><span class="token punctuation">;</span>
+	inAccountnum <span class="token keyword">INT</span><span class="token punctuation">;</span>
+<span class="token keyword">BEGIN</span>  
+	<span class="token comment">/* 检查转出账户的余额 */</span>
+	<span class="token keyword">SELECT</span> Total 
+	<span class="token keyword">INTO</span> totalDepositOut
+	<span class="token keyword">FROM</span> Account
+	<span class="token keyword">WHERE</span> Accountnum <span class="token operator">=</span> outAccount<span class="token punctuation">;</span>
+	<span class="token comment">/* 如果转出账户不存在或者账户中没有存款 */</span>
+	<span class="token keyword">IF</span> totalDepositOut <span class="token operator">IS</span> <span class="token boolean">NULL</span> <span class="token keyword">THEN</span>
+		<span class="token comment">/* 回滚事务 */</span>
+		<span class="token keyword">ROLLBACK</span><span class="token punctuation">;</span>  
+		<span class="token keyword">RETURN</span><span class="token punctuation">;</span>
+	<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+	<span class="token comment">/* 如果转出账户中余额不足 */</span>
+	<span class="token keyword">IF</span> totalDepositOut <span class="token operator">&lt;</span> amount <span class="token keyword">THEN</span>
+		<span class="token keyword">ROLLBACK</span><span class="token punctuation">;</span>
+		<span class="token keyword">RETURN</span><span class="token punctuation">;</span>
+	<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+	<span class="token comment">/* 检查转入账户是否存在 */</span>
+	<span class="token keyword">SELECT</span> Accountnum
+	<span class="token keyword">INTO</span> inAccountnum
+	<span class="token keyword">FROM</span> Account
+	<span class="token keyword">WHERE</span> Accountnum <span class="token operator">=</span> inAccount<span class="token punctuation">;</span>
+	<span class="token keyword">IF</span> inAccountnum <span class="token operator">IS</span> <span class="token boolean">NULL</span> <span class="token keyword">THEN</span>
+		<span class="token keyword">ROLLBACK</span><span class="token punctuation">;</span>
+		<span class="token keyword">RETURN</span><span class="token punctuation">;</span>
+	<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+	<span class="token comment">/* 此时可以正常转账，更新双方余额 */</span>
+	<span class="token keyword">UPDATE</span> Account
+	<span class="token keyword">SET</span> Total <span class="token operator">=</span> Total <span class="token operator">-</span> amount
+	<span class="token keyword">WHERE</span> Accountnum <span class="token operator">=</span> outAccount<span class="token punctuation">;</span>
+	
+	<span class="token keyword">UPDATE</span> Account
+	<span class="token keyword">SET</span> Total <span class="token operator">=</span> Total <span class="token operator">+</span> amount
+	<span class="token keyword">WHERE</span> Accountnum <span class="token operator">=</span> inAccount<span class="token punctuation">;</span>
+	<span class="token comment">/* 提交事务 */</span>
+	<span class="token keyword">COMMIT</span><span class="token punctuation">;</span>  
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br></div></div></div> <p><strong>执行存储过程：<code>CALL/PERFORM PROCEDURE</code></strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">CALL</span><span class="token operator">/</span>PERFORM <span class="token keyword">PROCEDURE</span> procedure_name<span class="token punctuation">(</span><span class="token punctuation">[</span>param1<span class="token punctuation">,</span> param2<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><div class="custom-block tip"><p>例子：从账户 123 转 100 元到账户 456 中</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">CALL</span> <span class="token keyword">PROCEDURE</span> TRANSFER<span class="token punctuation">(</span><span class="token number">456</span><span class="token punctuation">,</span> <span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></div> <p><strong>修改存储过程： <code>ALTER PROCEDURE</code></strong></p> <ul><li><p>重命名</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">ALTER</span> <span class="token keyword">PROCEDURE</span> procedure_name1 <span class="token keyword">RENAME</span> <span class="token keyword">TO</span> procedure_name2<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></li> <li><p>重新编译</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">ALTER</span> <span class="token keyword">PROCEDURE</span> procedure_name COMPILE<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></li></ul> <p><strong>删除存储过程：<code>DROP PROCEDURE</code></strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">DROP</span> <span class="token keyword">PROCEDURE</span> procedure_name<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="函数"><a href="#函数" class="header-anchor">#</a> 函数</h3> <div class="custom-block tip"><p>函数和存储过程的异同：</p> <ul><li>同：都是持久性存储模块</li> <li>异：<strong>函数必须指定返回值的类型</strong></li></ul></div> <p><strong>定义函数： <code>CREATE OR REPLACE FUNCTION</code></strong></p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">FUNCTION</span> function_name<span class="token punctuation">(</span><span class="token punctuation">[</span>parma1<span class="token punctuation">,</span> param2<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> <span class="token operator">&lt;</span>param_type<span class="token operator">&gt;</span>
+<span class="token keyword">AS</span> <span class="token operator">&lt;</span>过程化 <span class="token keyword">SQL</span> 块<span class="token operator">&gt;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p><strong>执行函数：<code>CALL/SELECT function_name([param1, param2, ...])</code></strong></p> <p><strong>修改函数：<code>ALTER FUNCTION</code></strong></p> <ul><li><p>重命名</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">ALTER</span> <span class="token keyword">FUNCTION</span> function_name1 RANEME <span class="token keyword">TO</span> function_name2<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></li> <li><p>重新编译</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">ALTER</span> <span class="token keyword">FUNCTION</span> function_name COMPILE<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></li></ul> <h2 id="sql-server"><a href="#sql-server" class="header-anchor">#</a> <code>SQL Server</code></h2> <div class="custom-block tip"><p><strong>查看存储过程的文本信息</strong>：<code>EXEC SP_HELPTEXT &lt;procedure_name&gt;</code></p></div> <div class="custom-block tip"><p>三种自定义函数：</p> <ul><li>标量值函数返回的是一个数据类型值</li> <li>内联表值函数返回的是一个 <code>TABLE</code></li> <li>多语句表值函数返回的是一个 <code>TABLE</code> 的变量（类似前面两个的结合）</li></ul> <p>语法的结构：</p> <ul><li>标量值函数和多语句表值函数都是要有 <code>BEGIN...END</code>，内联表值函数就没有</li></ul> <p>调用：</p> <ul><li>标量函数要写成在 <code>dbo.function_name</code></li></ul></div> <p>例一（<strong>存储过程</strong>）：创建存储过程 <code>cjjicx</code>，该存储过程的作用是：当任意输入一个学生的姓名时，将从三个表中返回该学生的学号、选修的课程名称和成绩</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> Cjjicx<span class="token punctuation">(</span>
+	<span class="token variable">@name</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">SELECT</span> Student<span class="token punctuation">.</span>Sno<span class="token punctuation">,</span> Course<span class="token punctuation">.</span>Cname<span class="token punctuation">,</span> SC<span class="token punctuation">.</span>Grade
+	<span class="token keyword">FROM</span> Student
+	<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> SC
+	<span class="token keyword">ON</span> Student<span class="token punctuation">.</span>Sno <span class="token operator">=</span> SC<span class="token punctuation">.</span>Sno
+	<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> Course
+	<span class="token keyword">ON</span> SC<span class="token punctuation">.</span>Cno <span class="token operator">=</span> Course<span class="token punctuation">.</span>Cno
+	<span class="token keyword">WHERE</span> Sname <span class="token operator">=</span> <span class="token variable">@name</span>
+<span class="token keyword">END</span>
+<span class="token keyword">RETURN</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><p>执行：<code>EXEC Cjjicx @name='张三'</code></p> <p>上例的<strong>函数</strong>实现：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> Cjjicx2<span class="token punctuation">(</span>
+	<span class="token variable">@name</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> <span class="token keyword">TABLE</span>
+<span class="token keyword">AS</span>
+<span class="token comment">/* 内联表值函数只有一句完整的 RETURN */</span>
+<span class="token keyword">RETURN</span> <span class="token punctuation">(</span>
+	<span class="token keyword">SELECT</span> Student<span class="token punctuation">.</span>Sno<span class="token punctuation">,</span> Course<span class="token punctuation">.</span>Cname<span class="token punctuation">,</span> SC<span class="token punctuation">.</span>Grade
+	<span class="token keyword">FROM</span> Student
+	<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> SC
+	<span class="token keyword">ON</span> Student<span class="token punctuation">.</span>Sno <span class="token operator">=</span> SC<span class="token punctuation">.</span>Sno
+	<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> Course
+	<span class="token keyword">ON</span> SC<span class="token punctuation">.</span>Cno <span class="token operator">=</span> Course<span class="token punctuation">.</span>Cno
+	<span class="token keyword">WHERE</span> Student<span class="token punctuation">.</span>Sname <span class="token operator">=</span> <span class="token variable">@name</span>
+<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><p><strong>内联表格值函数</strong>执行：<code>SELECT * FROM Cjjicx('张三')</code></p> <hr> <p>例二（<strong>存储过程</strong>）：</p> <p>创建一个加密的存储过程 <code>Jmxs</code>，当执行该存储过程时，返回 <code>IS</code> 系学生的所有信息</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> Jmxs
+<span class="token keyword">WITH</span> ENCRYPTION
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">SELECT</span> <span class="token operator">*</span>
+	<span class="token keyword">FROM</span> Student
+	<span class="token keyword">WHERE</span> Sdept <span class="token operator">=</span> <span class="token string">'IS'</span>
+<span class="token keyword">END</span>
+<span class="token keyword">RETURN</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><div class="custom-block tip"><p><code>SQL Server</code> 中<strong>存储过程加密的关键字为 <code>WITH ENCRYPTION</code></strong></p></div> <p>删除该存储过程：<code>DROP PROCEDURE Jmxs</code></p> <hr> <p>例三（<strong>存储过程</strong>）：</p> <p>创建一个名为 <code>Find_Grade</code> 的存储过程，该存储过程的作用是：如果 <code>Sname</code> 和 <code>Cname</code>，返回对应的 <code>Grade</code>，假设 <code>Sname</code> 和 <code>Cname</code> 都唯一</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> find_Grade<span class="token punctuation">(</span>
+	<span class="token variable">@StuName</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token variable">@ClaName</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">DECLARE</span> <span class="token variable">@StuNo</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+		    <span class="token variable">@ClaNo</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+
+	<span class="token keyword">SELECT</span> <span class="token variable">@StuNo</span> <span class="token operator">=</span> Sno
+	<span class="token keyword">FROM</span> Student
+	<span class="token keyword">WHERE</span> Sname <span class="token operator">=</span> <span class="token variable">@StuName</span>
+	
+	<span class="token keyword">SELECT</span> <span class="token variable">@ClaNo</span> <span class="token operator">=</span> Cno
+	<span class="token keyword">FROM</span> Course 
+	<span class="token keyword">WHERE</span> Cname <span class="token operator">=</span> <span class="token variable">@ClaName</span>
+
+	<span class="token keyword">SELECT</span> Grade
+	<span class="token keyword">FROM</span> SC
+	<span class="token keyword">WHERE</span> Sno <span class="token operator">=</span> <span class="token variable">@StuNo</span>
+	<span class="token operator">AND</span> Cno <span class="token operator">=</span> <span class="token variable">@ClaNo</span>
+<span class="token keyword">END</span>
+<span class="token keyword">RETURN</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br></div></div><p>上例<strong>函数</strong>实现：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> dbo<span class="token punctuation">.</span>Test2<span class="token punctuation">(</span>
+	<span class="token variable">@StuName</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token variable">@ClaName</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> <span class="token keyword">SMALLINT</span>
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">DECLARE</span> <span class="token variable">@StuNo</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+		    <span class="token variable">@ClaNo</span> <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token variable">@res</span> <span class="token keyword">SMALLINT</span>
+
+	<span class="token keyword">SELECT</span> <span class="token variable">@StuNo</span> <span class="token operator">=</span> Sno
+	<span class="token keyword">FROM</span> Student
+	<span class="token keyword">WHERE</span> Sname <span class="token operator">=</span> <span class="token variable">@StuName</span>
+	
+	<span class="token keyword">SELECT</span> <span class="token variable">@ClaNo</span> <span class="token operator">=</span> Cno
+	<span class="token keyword">FROM</span> Course 
+	<span class="token keyword">WHERE</span> Cname <span class="token operator">=</span> <span class="token variable">@ClaName</span>
+
+	<span class="token keyword">SELECT</span> <span class="token variable">@res</span> <span class="token operator">=</span> Grade
+	<span class="token keyword">FROM</span> SC
+	<span class="token keyword">WHERE</span> Sno <span class="token operator">=</span> <span class="token variable">@StuNo</span>
+	<span class="token operator">AND</span> Cno <span class="token operator">=</span> <span class="token variable">@ClaNo</span>
+
+	<span class="token keyword">RETURN</span> <span class="token variable">@res</span>
+<span class="token keyword">END</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><p><strong>标量函数的执行</strong>：<code>SELECT dbo.Test2('张三', '高等数学') grade</code></p> <hr> <p>例四（<strong>触发器</strong>）：</p> <p>建立一个名为 <code>Insert_xh</code> 的 <code>INSERT</code> 触发器，存储在 <code>SC</code> 表中，该触发器的作用是：当用户向 <code>SC</code> 表中插入记录时，如果插入了在 <code>Student</code> 表中没有的学生学号 <code>Sno</code>，则题时用户不能插入记录，否则提示记录插入成功</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> Insert_xh
+<span class="token keyword">ON</span> SC
+<span class="token keyword">FOR</span> <span class="token keyword">INSERT</span>
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">IF</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">SELECT</span> INS<span class="token punctuation">.</span>Sno <span class="token keyword">FROM</span> INSERTED INS<span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> Sno <span class="token keyword">FROM</span> Student<span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">BEGIN</span>
+		<span class="token keyword">PRINT</span> <span class="token string">'不能插入记录'</span>
+		<span class="token keyword">ROLLBACK</span>
+		<span class="token keyword">END</span>
+	<span class="token keyword">ELSE</span>
+		<span class="token keyword">PRINT</span> <span class="token string">'插入记录成功'</span>
+<span class="token keyword">END</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><div class="custom-block danger"><p><code>SQL Server</code> 的 <code>IF-ELSE</code> 语句块中若语句不止一句，<strong>需要用 <code>BEGIN-END</code> 语句块包裹</strong></p></div> <hr> <p>例五（<strong>触发器</strong>）：</p> <p>为 <code>Student</code> 表创建一个名为 <code>Dele_stu</code> 的 <code>DELETE</code> 触发器，该触发器的作用是：禁止删除 <code>Student</code> 表中的记录</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> Dele_stu
+<span class="token keyword">ON</span> Student
+<span class="token keyword">FOR</span> <span class="token keyword">DELETE</span>
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">PRINT</span> <span class="token string">'禁止删除'</span>
+	<span class="token keyword">ROLLBACK</span>
+<span class="token keyword">END</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><hr> <p>例六（触发器）：</p> <p>为 <code>SC</code> 表创建一个名为 <code>Update_grade</code> 的 <code>UPDATE</code> 触发器，该触发器的作用是禁止更新 <code>SC</code> 表中的 <code>Grade</code> 字段的内容</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">USE</span> DBS
+GO
+<span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> Update_grade
+<span class="token keyword">ON</span> SC
+<span class="token keyword">FOR</span> <span class="token keyword">UPDATE</span>
+<span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">IF</span> <span class="token punctuation">(</span>COLUMNS_UPDATED<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">04</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0</span>
+		<span class="token keyword">BEGIN</span>
+		<span class="token keyword">PRINT</span> <span class="token string">'禁止更新'</span>
+		<span class="token keyword">ROLLBACK</span>
+		<span class="token keyword">END</span>
+<span class="token keyword">END</span>
+GO
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><div class="custom-block tip"><p><code>SQL Server</code> 中 <code>COLUMNS_UPDATED()</code> 函数的用法，以上面的题为例，在 <code>SC</code> 表中，有三个属性，从左到右分别为 <code>Sno, Cno, Grade</code>。
+<code>&amp;</code> 符号是<strong>按位与运算</strong>的意思，<code>04</code> 是一个<strong>十六进制数</strong>，转换为二进制就是 <code>0000 0100</code>，<code>0</code> 代表该位置的属性没有被修改，<code>1</code> 代表被修改了。这里的左右顺序与表中属性的<strong>左右顺序相反</strong>，对应关系如下：</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>0 0 0 0 0   1    0   0 
+↑ ↑ ↑ ↑ ↑   ↑    ↑   ↑
+- - - - - Grade Cno Sno
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>也即，如果要限制 <code>Cno</code> 列属性不能被 <code>UPDATE</code>，只需要将语句改为：<code>IF(COLUMNS_UPDATED() &amp; 02) &gt; 0</code>，<code>02</code> 就是 <code>0000 0010</code> 的十六进制</p></div> <p><strong>禁用</strong>该触发器：<code>DISABLE TRIGGER update_grade ON SC</code></p> <p>删除该触发器：<code>DROP TRIGGER update_grade</code></p></div> <footer class="page-edit" style="display:none;"><!----> <!----></footer> <!----> <!----></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-44bd5a18 data-v-44bd5a18><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-44bd5a18><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-44bd5a18></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-44bd5a18></path></svg></div></div></div>
+    <script src="/assets/js/app.80d57d75.js" defer></script><script src="/assets/js/3.187167f1.js" defer></script><script src="/assets/js/1.965fe851.js" defer></script><script src="/assets/js/37.7c722428.js" defer></script>
+  </body>
+</html>
